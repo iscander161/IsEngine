@@ -5,9 +5,13 @@ Hybrid 2D/3D game engine based on C++ + Vulkan + SDL3.
 ## Current build state
 
 ✅ CMake configuration successful 
+
 ✅ Engine (static library) build successful 
+
 ⏳ The Platform module is in development.  
+
 ⏳ Renderer module - pending 
+
 ⏳ Math module - pending
 
 ## Change history
