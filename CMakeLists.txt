@@ -40,6 +40,18 @@ add_definitions(
     -DPRODUCT_COMMIT_DATE=${PRODUCT_COMMIT_DATE}
 )
 
+set(PLATFORM_DEFS "${COMPILE_DEFINITIONS} ")
+
+if(WIN32)
+    add_definitions(-DPLATFORM_WINDOWS)
+elseif(APPLE)
+    add_definitions(-DPLATFORM_MACOS)
+elseif(UNIX)
+    add_definitions(-DPLATFORM_LINUX)
+endif()
+
+add_definitions()
+
 # Подключаем SDL как подмодуль
 add_subdirectory(Libs/SDL)
 
