@@ -40,4 +40,8 @@ add_definitions(
     -DPRODUCT_COMMIT_DATE=${PRODUCT_COMMIT_DATE}
 )
 
-add_subdirectory(Tools/IsMusicEditor)
+# Подключаем SDL как подмодуль
+add_subdirectory(Libs/SDL)
+
+# Подключаем движок и игру
+add_subdirectory(Engine)
