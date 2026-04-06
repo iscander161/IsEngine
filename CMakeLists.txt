@@ -52,6 +52,15 @@ endif()
 
 add_definitions()
 
+set(SDL3_LIBUSB OFF CACHE BOOL "" FORCE)
+set(SDL3_HIDAPI_LIBUSB OFF CACHE BOOL "" FORCE)
+set(SDL_SHARED OFF CACHE BOOL "Build SDL3 as shared library" FORCE)
+set(SDL_STATIC ON CACHE BOOL "Build SDL3 as static library" FORCE)
+
+if(MINGW)
+    add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wno-incompatible-pointer-types>)
+endif()
+
 # Подключаем SDL как подмодуль
 add_subdirectory(Libs/SDL)
 
