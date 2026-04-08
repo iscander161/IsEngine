@@ -47,8 +47,15 @@ public:
      * @return float 
      */
     float getTime() const override;
-    
+
+    /**
+     * @brief Returns whether the platform is valid.
+     * @return true - Platform is valid.
+     * @return false - Platform is invalid.
+     */
+    bool isValid() const override;
 private:
+
     /**
      * @brief 
      */
@@ -58,6 +65,11 @@ private:
      * @brief 
      */
     std::unique_ptr<SDLInput> m_input;
+
+    /**
+     * @brief Platform valid flag.
+     */
+    bool m_valid = false;
 };
 
 } /* Namespace IsEngine. */

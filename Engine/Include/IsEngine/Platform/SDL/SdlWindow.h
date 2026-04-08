@@ -11,6 +11,7 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include <IsEngine/Platform/IWindow.h>
+#include <SDL3/SDL.h>
 
 namespace IsEngine {
 
@@ -20,6 +21,16 @@ namespace IsEngine {
 class SDLWindow : public IWindow {
 public:
     /**
+     * @brief Construct a new SDLWindow object
+     */
+    SDLWindow();
+
+    /**
+     * @brief Destroy the SDLWindow object
+     */
+    ~SDLWindow();
+
+    /**
      * @brief 
      * @param width 
      * @param height 
@@ -27,30 +38,41 @@ public:
      * @return true 
      * @return false 
      */
-    bool create(int width, int height, const char* title) override { return false; }
+    bool create(int width, int height, const char* title) override;
 
     /**
      * @brief 
      */
-    void destroy() override {}
+    void destroy() override;
 
     /**
      * @brief 
      */
-    void pollEvents() override {}
+    void pollEvents() override;
 
     /**
      * @brief 
      * @return true 
      * @return false 
      */
-    bool shouldClose() const override { return false; }
+    bool shouldClose() const override;
 
     /**
      * @brief Get the Native Handle object
      * @return void* 
      */
-    void* getNativeHandle() const override { return nullptr; }
+    void* getNativeHandle() const override;
+
+private:
+    /**
+     * @brief 
+     */
+    SDL_Window* m_window;
+
+    /**
+     * @brief 
+     */
+    bool m_shouldClose;
 };
 
 } /* Namespace IsEngine. */

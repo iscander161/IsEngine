@@ -47,6 +47,14 @@ public:
      * @return std::unique_ptr<IPlatform> 
      */
     static std::unique_ptr<IPlatform> create();
+
+    /**
+     * @brief Returns whether the platform is valid.
+     * @return true - Platform is valid.
+     * @return false - Platform is invalid.
+     */
+    virtual bool isValid() const = 0;
+
 };
 
 } /* Namespace IsEngine. */

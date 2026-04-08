@@ -25,7 +25,7 @@ public:
      * @return true 
      * @return false 
      */
-    bool isKeyPressed(KeyCode key) const override { return false; }
+    bool isKeyPressed(KeyCode key) const override { (void)key; return false; }
 
     /**
      * @brief 
@@ -33,7 +33,7 @@ public:
      * @return true 
      * @return false 
      */
-    bool isMouseButtonPressed(MouseButton button) const override { return false; }
+    bool isMouseButtonPressed(MouseButton button) const override { (void)button; return false; }
 
     /**
      * @brief Get the Mouse Position object

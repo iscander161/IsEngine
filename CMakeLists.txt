@@ -66,3 +66,6 @@ add_subdirectory(Libs/SDL)
 
 # Подключаем движок и игру
 add_subdirectory(Engine)
+
+# Тесты
+add_subdirectory(Tests/SdlTest01)
