@@ -1,3 +1,24 @@
 [submodule "Libs/SDL"]
 	path = Libs/SDL
 	url = https://github.com/libsdl-org/SDL.git
+[submodule "Libs/VulkanSDK/Vulkan-Headers"]
+	path = Libs/VulkanSDK/Vulkan-Headers
+	url = https://github.com/KhronosGroup/Vulkan-Headers.git
+[submodule "Libs/VulkanSDK/Vulkan-Loader"]
+	path = Libs/VulkanSDK/Vulkan-Loader
+	url = https://github.com/KhronosGroup/Vulkan-Loader.git
+[submodule "Libs/VulkanSDK/Vulkan-ValidationLayers"]
+	path = Libs/VulkanSDK/Vulkan-ValidationLayers
+	url = https://github.com/KhronosGroup/Vulkan-ValidationLayers.git
+[submodule "Libs/VulkanSDK/glslang"]
+	path = Libs/VulkanSDK/glslang
+	url = https://github.com/KhronosGroup/glslang.git
+[submodule "Libs/VulkanSDK/SPIRV-Tools"]
+	path = Libs/VulkanSDK/SPIRV-Tools
+	url = https://github.com/KhronosGroup/SPIRV-Tools.git
+[submodule "Libs/VulkanSDK/SPIRV-Headers"]
+	path = Libs/VulkanSDK/SPIRV-Headers
+	url = https://github.com/KhronosGroup/SPIRV-Headers.git
+[submodule "Libs/VulkanSDK/Vulkan-Tools"]
+	path = Libs/VulkanSDK/Vulkan-Tools
+	url = https://github.com/KhronosGroup/Vulkan-Tools.git

@@ -40,6 +40,38 @@ add_definitions(
     -DPRODUCT_COMMIT_DATE=${PRODUCT_COMMIT_DATE}
 )
 
+include(ProcessorCount)
+ProcessorCount(NUM_CORES)
+
+if(NUM_CORES GREATER 0)
+    # Используем половину доступных ядер (минимум 1)
+    math(EXPR MAX_PARALLEL "${NUM_CORES} / 2")
+    
+    # Убеждаемся, что хотя бы 1 процесс используется
+    if(MAX_PARALLEL LESS 1)
+        set(MAX_PARALLEL 1)
+    endif()
+    
+    message(STATUS "System has ${NUM_CORES} CPU cores")
+    message(STATUS "Limiting parallel jobs to ${MAX_PARALLEL} (half of system cores)")
+    
+    # Для CMake 3.12+ используем JOB_POOLS
+    if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
+        set_property(GLOBAL PROPERTY JOB_POOLS compile_pool=${MAX_PARALLEL})
+        set(CMAKE_JOB_POOL_COMPILE compile_pool)
+        
+        # Опционально: ограничиваем и линковку (обычно легче)
+        # set(CMAKE_JOB_POOL_LINK compile_pool)
+    endif()
+    
+    # Устанавливаем переменную окружения для cmake --build
+    set(ENV{CMAKE_BUILD_PARALLEL_LEVEL} ${MAX_PARALLEL})
+else()
+    # Если не удалось определить, используем значение по умолчанию
+    message(WARNING "Could not detect number of CPU cores, defaulting to 2 parallel jobs")
+    set(ENV{CMAKE_BUILD_PARALLEL_LEVEL} 2)
+endif()
+
 set(PLATFORM_DEFS "${COMPILE_DEFINITIONS} ")
 
 if(WIN32)
@@ -50,7 +82,36 @@ elseif(UNIX)
     add_definitions(-DPLATFORM_LINUX)
 endif()
 
-add_definitions()
+# ============================================================================
+# Vulkan SDK - Полная сборка из подмодулей
+# ============================================================================
+
+# Добавляем Vulkan-Headers (только заголовки, не требует сборки)
+add_subdirectory(Libs/VulkanSDK/Vulkan-Headers)
+
+# Настройка Vulkan-Loader
+set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(BUILD_LOADER ON CACHE BOOL "" FORCE)
+set(BUILD_WERROR OFF CACHE BOOL "" FORCE)
+set(UPDATE_DEPS ON CACHE BOOL "" FORCE)  # Автоматически загружает и собирает зависимости
+
+# Добавляем Vulkan-Loader (он сам подтянет glslang, SPIRV-Tools и др. через UPDATE_DEPS)
+add_subdirectory(Libs/VulkanSDK/Vulkan-Loader)
+
+# Настройка Validation Layers
+set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(BUILD_WERROR OFF CACHE BOOL "" FORCE)
+set(UPDATE_DEPS ON CACHE BOOL "" FORCE)
+add_subdirectory(Libs/VulkanSDK/Vulkan-ValidationLayers)
+
+# Создаём цель Vulkan::Vulkan для линковки с движком
+if(NOT TARGET Vulkan::Vulkan)
+    add_library(Vulkan::Vulkan UNKNOWN IMPORTED)
+    set_target_properties(Vulkan::Vulkan PROPERTIES
+        IMPORTED_LOCATION ${Vulkan_LIBRARY}
+        INTERFACE_INCLUDE_DIRECTORIES ${Vulkan_INCLUDE_DIRS}
+    )
+endif()
 
 set(SDL3_LIBUSB OFF CACHE BOOL "" FORCE)
 set(SDL3_HIDAPI_LIBUSB OFF CACHE BOOL "" FORCE)
