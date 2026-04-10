@@ -1,0 +1,24 @@
+stages:
+  - build
+
+# Документация для github pages (для разработчиков).
+build_page_docs:
+  stage: build
+  tags:
+    - software
+  variables:
+    GIT_SUBMODULE_STRATEGY: recursive
+    DIST_DIR: Install
+    BLD_DIR: Build
+    DIST_FILE: version.txt
+  before_script:
+    - CHCP 65001
+  script: 
+    - mkdir Install
+    - doxygen.exe TechDoc.conf
+  artifacts:
+    paths:
+      - Install
+  only:
+    - main
+    - develop
