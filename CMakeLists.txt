@@ -44,10 +44,9 @@ include(ProcessorCount)
 ProcessorCount(NUM_CORES)
 
 if(NUM_CORES GREATER 0)
-    # Используем половину доступных ядер (минимум 1)
+    # Use half of the available cores (minimum 1)
     math(EXPR MAX_PARALLEL "${NUM_CORES} / 2")
     
-    # Убеждаемся, что хотя бы 1 процесс используется
     if(MAX_PARALLEL LESS 1)
         set(MAX_PARALLEL 1)
     endif()
@@ -55,19 +54,19 @@ if(NUM_CORES GREATER 0)
     message(STATUS "System has ${NUM_CORES} CPU cores")
     message(STATUS "Limiting parallel jobs to ${MAX_PARALLEL} (half of system cores)")
     
-    # Для CMake 3.12+ используем JOB_POOLS
+    # For CMake 3.12+ use JOB_POOLS
     if(CMAKE_VERSION VERSION_GREATER_EQUAL "3.12")
         set_property(GLOBAL PROPERTY JOB_POOLS compile_pool=${MAX_PARALLEL})
         set(CMAKE_JOB_POOL_COMPILE compile_pool)
         
-        # Опционально: ограничиваем и линковку (обычно легче)
+        # Optional: We also limit linking (usually easier).
         # set(CMAKE_JOB_POOL_LINK compile_pool)
     endif()
     
-    # Устанавливаем переменную окружения для cmake --build
+    # Env var for CMake
     set(ENV{CMAKE_BUILD_PARALLEL_LEVEL} ${MAX_PARALLEL})
 else()
-    # Если не удалось определить, используем значение по умолчанию
+    # Default values
     message(WARNING "Could not detect number of CPU cores, defaulting to 2 parallel jobs")
     set(ENV{CMAKE_BUILD_PARALLEL_LEVEL} 2)
 endif()
@@ -83,28 +82,27 @@ elseif(UNIX)
 endif()
 
 # ============================================================================
-# Vulkan SDK - Полная сборка из подмодулей
+# Vulkan SDK - Complete build from submodules.
 # ============================================================================
 
-# Добавляем Vulkan-Headers (только заголовки, не требует сборки)
+# Adding Vulkan-Headers (only headers, build not needed)
 add_subdirectory(Libs/VulkanSDK/Vulkan-Headers)
 
-# Настройка Vulkan-Loader
+# Setup Vulkan-Loader
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_LOADER ON CACHE BOOL "" FORCE)
 set(BUILD_WERROR OFF CACHE BOOL "" FORCE)
-set(UPDATE_DEPS ON CACHE BOOL "" FORCE)  # Автоматически загружает и собирает зависимости
+set(UPDATE_DEPS ON CACHE BOOL "" FORCE)
 
-# Добавляем Vulkan-Loader (он сам подтянет glslang, SPIRV-Tools и др. через UPDATE_DEPS)
 add_subdirectory(Libs/VulkanSDK/Vulkan-Loader)
 
-# Настройка Validation Layers
+# Setup Validation Layers
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_WERROR OFF CACHE BOOL "" FORCE)
 set(UPDATE_DEPS ON CACHE BOOL "" FORCE)
 add_subdirectory(Libs/VulkanSDK/Vulkan-ValidationLayers)
 
-# Создаём цель Vulkan::Vulkan для линковки с движком
+# Creating purpose Vulkan::Vulkan for linking with engine
 if(NOT TARGET Vulkan::Vulkan)
     add_library(Vulkan::Vulkan UNKNOWN IMPORTED)
     set_target_properties(Vulkan::Vulkan PROPERTIES
@@ -122,11 +120,11 @@ if(MINGW)
     add_compile_options($<$<COMPILE_LANGUAGE:C>:-Wno-incompatible-pointer-types>)
 endif()
 
-# Подключаем SDL как подмодуль
+# Add SDL as submodule
 add_subdirectory(Libs/SDL)
 
-# Подключаем движок и игру
+# Add general engine
 add_subdirectory(Engine)
 
-# Тесты
+# Tests
 add_subdirectory(Tests/SdlTest01)

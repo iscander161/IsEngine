@@ -1,5 +1,5 @@
-stages:
-  - build
+jobs:
+  - build_page_docs
 
 # Документация для github pages (для разработчиков).
 build_page_docs:

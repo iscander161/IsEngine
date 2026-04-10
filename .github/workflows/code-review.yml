@@ -1,0 +1,73 @@
+name: Code Review Request
+
+on:
+  push:
+    branches: [ "main", "develop" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:  # ручной запуск
+
+jobs:
+  send-for-review:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0  # Полная история для получения изменений
+        submodules: recursive
+    
+    - name: Get changed files
+      id: changes
+      run: |
+        if [ -z "${{ github.event.before }}" ] || [ "${{ github.event.before }}" == "0000000000000000000000000000000000000000" ]; then
+          # Первый коммит или новый репозиторий
+          FILES=$(git ls-tree -r --name-only HEAD)
+        else
+          # Получаем список изменённых файлов
+          FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+        fi
+        echo "files=$FILES" >> $GITHUB_OUTPUT
+        echo "Changed files: $FILES"
+    
+    - name: Prepare review data
+      id: prepare
+      run: |
+        # Собираем информацию о коммите
+        COMMIT_MSG=$(git log -1 --pretty=%B)
+        COMMIT_AUTHOR=$(git log -1 --pretty=%an)
+        COMMIT_HASH=${{ github.sha }}
+        
+        # Собираем содержимое изменённых файлов
+        FILES_CONTENT=""
+        for file in ${{ steps.changes.outputs.files }}; do
+          if [ -f "$file" ]; then
+            echo "=== $file ===" >> files_content.txt
+            cat "$file" >> files_content.txt
+            echo "" >> files_content.txt
+            echo "---" >> files_content.txt
+          fi
+        done
+        
+        # Формируем JSON
+        cat > review_data.json << EOF
+        {
+          "commit_hash": "$COMMIT_HASH",
+          "author": "$COMMIT_AUTHOR",
+          "message": $(echo "$COMMIT_MSG" | jq -R -s '.'),
+          "changed_files": $(echo "$FILES" | jq -R -s 'split("\n")[:-1]'),
+          "content": $(cat files_content.txt | jq -R -s '.')
+        }
+        EOF
+        
+        echo "Review data prepared"
+    
+    - name: Send to DeepSeek (mock)
+      run: |
+        # Здесь будет реальный вызов API
+        echo "Would send to: ${{ secrets.DEEPSEEK_WEBHOOK_URL }}"
+        echo "Data size: $(wc -c < review_data.json) bytes"
+        
+        # Для отладки показываем первые 500 символов
+        head -c 500 review_data.json
