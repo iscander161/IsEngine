@@ -42,7 +42,7 @@ enum class CmdLineArgType {
 /**
  * @brief Container for a command line Argument.
  */
-UNIQUE_IFACE class ICmdLineArg {
+ISENGINE_UNIQUE_IFACE class ICmdLineArg {
 public:
     /**
      * @brief Destroy the ICmdLineArg object

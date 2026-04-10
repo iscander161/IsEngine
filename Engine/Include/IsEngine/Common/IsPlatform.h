@@ -9,13 +9,13 @@
 
 #pragma once
 
-#ifndef UNIQUE_IFACE
+#ifndef ISENGINE_UNIQUE_IFACE
 	
 /**
  * @brief UNIQUE_IFACE expands to nothing on _all_ platforms, but is recognized by 
  * the de-virtualization tool.  If placed in front of an interface 
  * struct/class, all methods are assumed to be unique-virtual.
  */
-#define UNIQUE_IFACE
+#define ISENGINE_UNIQUE_IFACE
 
-#endif /* UNIQUE_IFACE */
+#endif /* ISENGINE_UNIQUE_IFACE */
