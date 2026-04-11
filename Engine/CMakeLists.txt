@@ -7,9 +7,10 @@ target_include_directories(Engine PUBLIC
 )
 
 target_sources(Engine PRIVATE
-    ${CMAKE_CURRENT_SOURCE_DIR}/Src/Stub.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Src/SDL/SdlPlatform.cpp
-    ${CMAKE_CURRENT_SOURCE_DIR}/Src/SDL/SdlWindow.cpp
+    Src/Common/System/CmdLineArgs.cpp
+    Src/SDL/SdlPlatform.cpp
+    Src/SDL/SdlWindow.cpp
+    Src/Stub.cpp
 )
 
 target_link_libraries(Engine PRIVATE 
@@ -25,7 +26,3 @@ if(MSVC)
 else()
     target_compile_options(Engine PRIVATE -Wall -Wextra -Wpedantic -Werror)
 endif()
-
-target_include_directories(Engine PRIVATE
-    Include
-)

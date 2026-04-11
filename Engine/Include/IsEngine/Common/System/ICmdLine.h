@@ -10,7 +10,7 @@
 #pragma once // Define to prevent recursive inclusion
 
 /* Includes ------------------------------------------------------------------*/
-#include "Common/IsPlatform.h"
+#include "IsEngine/Common/IsPlatform.h"
 
 namespace IsEngine::Common {
 
@@ -65,19 +65,19 @@ public:
      * @brief Retrieve the type of argument.
      * @return const CmdLineArgType - The type of command line argument. @ref CmdLineArgType
      */
-	virtual const CmdLineArgType GetType() const = 0;
+	virtual CmdLineArgType GetType() const = 0;
 	
     /**
      * @brief Retrieve the value of the argument.
      * @return const float - The value of the argument as float number.
      */
-	virtual const float GetFValue() const = 0;
+	virtual float GetFValue() const = 0;
 
     /**
      * @brief Retrieve the value of the argument.
      * @return const int - The value of the argument as integer number.
      */
-	virtual const int GetIValue() const = 0;
+	virtual int GetIValue() const = 0;
 };
 
 /** 

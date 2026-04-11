@@ -8,8 +8,8 @@
  */
 
 /* Includes ------------------------------------------------------------------*/
-#include <IsEngine/Platform/IPlatform.h>
 #include <iostream>
+#include <IsEngine/Platform/IPlatform.h>
 
 int main(int argc, char** argvs) {
     auto platform = IsEngine::IPlatform::create();
