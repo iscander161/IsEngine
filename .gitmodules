@@ -22,3 +22,6 @@
 [submodule "Libs/VulkanSDK/Vulkan-Tools"]
 	path = Libs/VulkanSDK/Vulkan-Tools
 	url = https://github.com/KhronosGroup/Vulkan-Tools.git
+[submodule "Libs/VulkanSDK/Vulkan-Utility-Libraries"]
+	path = Libs/VulkanSDK/Vulkan-Utility-Libraries
+	url = https://github.com/KhronosGroup/Vulkan-Utility-Libraries.git

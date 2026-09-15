@@ -85,6 +85,8 @@ endif()
 # Vulkan SDK - Complete build from submodules.
 # ============================================================================
 
+message(STATUS "VULKAN SDK = " ${VULKAN_SDK})
+
 # Adding Vulkan-Headers (only headers, build not needed)
 add_subdirectory(Libs/VulkanSDK/Vulkan-Headers)
 
@@ -92,14 +94,18 @@ add_subdirectory(Libs/VulkanSDK/Vulkan-Headers)
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_LOADER ON CACHE BOOL "" FORCE)
 set(BUILD_WERROR OFF CACHE BOOL "" FORCE)
-set(UPDATE_DEPS ON CACHE BOOL "" FORCE)
+set(UPDATE_DEPS OFF CACHE BOOL "" FORCE)
 
 add_subdirectory(Libs/VulkanSDK/Vulkan-Loader)
+
+add_subdirectory(Libs/VulkanSDK/SPIRV-Headers)
+
+add_subdirectory(Libs/VulkanSDK/Vulkan-Utility-Libraries)
 
 # Setup Validation Layers
 set(BUILD_TESTS OFF CACHE BOOL "" FORCE)
 set(BUILD_WERROR OFF CACHE BOOL "" FORCE)
-set(UPDATE_DEPS ON CACHE BOOL "" FORCE)
+set(UPDATE_DEPS OFF CACHE BOOL "" FORCE)
 add_subdirectory(Libs/VulkanSDK/Vulkan-ValidationLayers)
 
 # Creating purpose Vulkan::Vulkan for linking with engine
