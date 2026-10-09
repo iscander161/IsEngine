@@ -43,4 +43,5 @@
 build/
 Build/
 Install/
+.idea/
 send_for_review.sh
